@@ -1,0 +1,1 @@
+ignores: ["module-link-unlink", "ts-dev-stack", "@types/*", "@biomejs/*"]
