@@ -6,8 +6,8 @@ import mkdirp from 'mkdirp-classic';
 import Queue from 'queue-cb';
 
 function linkBin(src, binPath, nodeModules, binName, callback) {
-  const binFullPath = path.resolve.apply(null, [src, ...binPath.split('/')]);
-  const destBin = path.resolve(nodeModules, '.bin', binName);
+  const binFullPath = path.join.apply(null, [src, ...binPath.split('/')]);
+  const destBin = path.join(nodeModules, '.bin', binName);
 
   access(binFullPath, (err) => {
     if (!err) return link(binFullPath, destBin, callback);
@@ -19,7 +19,7 @@ function linkBin(src, binPath, nodeModules, binName, callback) {
 function worker(src, nodeModules, callback) {
   try {
     const pkg = JSON.parse(fs.readFileSync(path.join(src, 'package.json'), 'utf8'));
-    const dest = path.resolve.apply(null, [nodeModules, ...pkg.name.split('/')]);
+    const dest = path.join.apply(null, [nodeModules, ...pkg.name.split('/')]);
 
     mkdirp(path.dirname(dest), (err) => {
       if (err) return callback(err);

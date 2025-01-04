@@ -17,7 +17,7 @@ function unlinkBin(nodeModules, binName, callback) {
 function worker(src, nodeModules, callback) {
   try {
     const pkg = JSON.parse(fs.readFileSync(path.join(src, 'package.json'), 'utf8'));
-    const dest = path.resolve.apply(null, [nodeModules, ...pkg.name.split('/')]);
+    const dest = path.join.apply(null, [nodeModules, ...pkg.name.split('/')]);
 
     const queue = new Queue(1);
     queue.defer(unlink.bind(null, dest));

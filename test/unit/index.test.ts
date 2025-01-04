@@ -10,8 +10,8 @@ import rimraf2 from 'rimraf2';
 import { linkModule, unlinkModule } from 'module-link-unlink';
 
 const __dirname = path.dirname(typeof __filename !== 'undefined' ? __filename : url.fileURLToPath(import.meta.url));
-const DATA = path.resolve(__dirname, '..', '..', 'node_modules');
-const TMP_DIR = path.resolve(__dirname, '..', '..', '.tmp');
+const DATA = path.join(__dirname, '..', '..', 'node_modules');
+const TMP_DIR = path.join(__dirname, '..', '..', '.tmp');
 
 describe('module-link-unlink', () => {
   before(rimraf2.bind(null, TMP_DIR, { disableGlob: true }));
@@ -52,8 +52,8 @@ describe('module-link-unlink', () => {
       })();
 
       it('linkModule', (done) => {
-        const source = path.resolve(DATA, name);
-        const dest = path.resolve(TMP_DIR, name);
+        const source = path.join(DATA, name);
+        const dest = path.join(TMP_DIR, name);
         assert.equal(existsSync(dest), false);
 
         linkModule(source, TMP_DIR, (err, restore) => {
@@ -77,8 +77,8 @@ describe('module-link-unlink', () => {
       });
 
       it('linkModule (promise)', async () => {
-        const source = path.resolve(DATA, name);
-        const dest = path.resolve(TMP_DIR, name);
+        const source = path.join(DATA, name);
+        const dest = path.join(TMP_DIR, name);
         assert.equal(existsSync(dest), false);
 
         const restore = await linkModule(source, TMP_DIR);
@@ -98,8 +98,8 @@ describe('module-link-unlink', () => {
       });
 
       it('linkModule multiple', (done) => {
-        const source = path.resolve(DATA, name);
-        const dest = path.resolve(TMP_DIR, name);
+        const source = path.join(DATA, name);
+        const dest = path.join(TMP_DIR, name);
         assert.equal(existsSync(dest), false);
 
         linkModule(source, TMP_DIR, (err) => {
