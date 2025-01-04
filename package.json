@@ -50,7 +50,7 @@
   },
   "dependencies": {
     "fs-access-compat": "^1.1.4",
-    "link-unlink": "^0.1.10",
+    "link-unlink": "^0.1.11",
     "mkdirp-classic": "^0.5.3",
     "queue-cb": "^1.4.10"
   },
