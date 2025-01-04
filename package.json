@@ -49,9 +49,9 @@
   },
   "dependencies": {
     "fs-access-compat": "^1.1.4",
-    "link-unlink": "^0.1.7",
+    "link-unlink": "^0.1.8",
     "mkdirp-classic": "^0.5.3",
-    "queue-cb": "^1.4.8"
+    "queue-cb": "^1.4.9"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
