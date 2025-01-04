@@ -5,7 +5,7 @@ import { unlink } from 'link-unlink';
 import Queue from 'queue-cb';
 
 function unlinkBin(nodeModules, binName, callback) {
-  const destBin = path.resolve(nodeModules, '.bin', binName);
+  const destBin = path.join(nodeModules, '.bin', binName);
 
   access(destBin, (err) => {
     if (!err) return unlink(destBin, callback);
@@ -34,13 +34,9 @@ function worker(src, nodeModules, callback) {
   }
 }
 
-import type { UnlinkCallback } from './types.js';
+import type { UnlinkCallback } from './types';
 
 export default function unlinkModule(src: string, nodeModules: string, callback?: undefined | UnlinkCallback): undefined | Promise<string> {
   if (typeof callback === 'function') return worker(src, nodeModules, callback) as undefined;
-  return new Promise((resolve, reject) => {
-    worker(src, nodeModules, (err, restore?) => {
-      err ? reject(err) : resolve(restore);
-    });
-  });
+  return new Promise((resolve, reject) => worker(src, nodeModules, (err, restore?) => (err ? reject(err) : resolve(restore))));
 }

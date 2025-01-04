@@ -1,13 +1,9 @@
-// remove NODE_OPTIONS from ts-dev-stack
-delete process.env.NODE_OPTIONS;
-
 import assert from 'assert';
 import fs from 'fs';
 import path from 'path';
 import url from 'url';
 import existsSync from 'fs-exists-sync';
-// biome-ignore lint/suspicious/noShadowRestrictedNames: <explanation>
-import Promise from 'pinkie-promise';
+import Pinkie from 'pinkie-promise';
 import rimraf2 from 'rimraf2';
 
 // @ts-ignore
@@ -41,15 +37,19 @@ describe('module-link-unlink', () => {
     }
 
     describe(name, () => {
-      const root = typeof global !== 'undefined' ? global : window;
-      let rootPromise: Promise;
-      before(() => {
-        rootPromise = root.Promise;
-        root.Promise = Promise;
-      });
-      after(() => {
-        root.Promise = rootPromise;
-      });
+      (() => {
+        // patch and restore promise
+        // @ts-ignore
+        let rootPromise: Promise;
+        before(() => {
+          rootPromise = global.Promise;
+          // @ts-ignore
+          global.Promise = Pinkie;
+        });
+        after(() => {
+          global.Promise = rootPromise;
+        });
+      })();
 
       it('linkModule', (done) => {
         const source = path.resolve(DATA, name);
