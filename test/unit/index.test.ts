@@ -57,7 +57,7 @@ describe('module-link-unlink', () => {
         assert.equal(existsSync(dest), false);
 
         linkModule(source, TMP_DIR, (err, restore) => {
-          assert.ok(!err, err ? err.message : '');
+          if (err) return done(err);
           assert.equal(restore, dest);
           assert.equal(existsSync(dest), true);
           checkFiles(fs.readdirSync(TMP_DIR), 1);
@@ -68,7 +68,7 @@ describe('module-link-unlink', () => {
           const stat = fs.statSync(dest);
           assert.ok(isType(stat));
           unlinkModule(source, TMP_DIR, (err) => {
-            assert.ok(!err, err ? err.message : '');
+            if (err) return done(err);
             assert.equal(existsSync(dest), false);
             assert.equal(fs.readdirSync(TMP_DIR).length, 0);
             done();
@@ -103,29 +103,29 @@ describe('module-link-unlink', () => {
         assert.equal(existsSync(dest), false);
 
         linkModule(source, TMP_DIR, (err) => {
-          assert.ok(!err, err ? err.message : '');
+          if (err) return done(err);
 
           linkModule(source, TMP_DIR, (err) => {
-            assert.ok(!err, err ? err.message : '');
+            if (err) return done(err);
 
             linkModule(source, TMP_DIR, (err) => {
-              assert.ok(!err, err ? err.message : '');
+              if (err) return done(err);
 
               assert.equal(existsSync(dest), true);
               checkFiles(fs.readdirSync(TMP_DIR), 3);
 
               unlinkModule(source, TMP_DIR, (err) => {
-                assert.ok(!err, err ? err.message : '');
+                if (err) return done(err);
                 assert.equal(existsSync(dest), true);
                 checkFiles(fs.readdirSync(TMP_DIR), 2);
 
                 unlinkModule(source, TMP_DIR, (err) => {
-                  assert.ok(!err, err ? err.message : '');
+                  if (err) return done(err);
                   assert.equal(existsSync(dest), true);
                   checkFiles(fs.readdirSync(TMP_DIR), 1);
 
                   unlinkModule(source, TMP_DIR, (err) => {
-                    assert.ok(!err, err ? err.message : '');
+                    if (err) return done(err);
                     assert.equal(existsSync(dest), false);
                     assert.equal(fs.readdirSync(TMP_DIR).length, 0);
                     done();
