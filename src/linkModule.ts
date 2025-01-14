@@ -1,6 +1,5 @@
 import fs from 'fs';
 import path from 'path';
-import access from 'fs-access-compat';
 import { link } from 'link-unlink';
 import mkdirp from 'mkdirp-classic';
 import Queue from 'queue-cb';
@@ -9,7 +8,7 @@ function linkBin(src, binPath, nodeModules, binName, callback) {
   const binFullPath = path.join.apply(null, [src, ...binPath.split('/')]);
   const destBin = path.join(nodeModules, '.bin', binName);
 
-  access(binFullPath, (err) => {
+  fs.stat(binFullPath, (err) => {
     if (!err) return link(binFullPath, destBin, callback);
     console.log(`bin not found: ${binFullPath}. Skipping`);
     callback();

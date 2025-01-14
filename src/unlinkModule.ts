@@ -1,13 +1,12 @@
 import fs from 'fs';
 import path from 'path';
-import access from 'fs-access-compat';
 import { unlink } from 'link-unlink';
 import Queue from 'queue-cb';
 
 function unlinkBin(nodeModules, binName, callback) {
   const destBin = path.join(nodeModules, '.bin', binName);
 
-  access(destBin, (err) => {
+  fs.stat(destBin, (err) => {
     if (!err) return unlink(destBin, callback);
     console.log(`bin not found: ${destBin}. Skipping`);
     callback();
