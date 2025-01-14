@@ -43,9 +43,9 @@
     "version": "tsds version"
   },
   "dependencies": {
-    "link-unlink": "^0.1.13",
+    "link-unlink": "^0.1.14",
     "mkdirp-classic": "^0.5.3",
-    "queue-cb": "^1.4.11"
+    "queue-cb": "^1.4.12"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
