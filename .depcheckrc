@@ -1,1 +1,1 @@
-ignores: ["module-link-unlink", "@types/*", "@biomejs/*"]
+ignores: ["@types/*", "module-link-unlink", "@biomejs/*"]
