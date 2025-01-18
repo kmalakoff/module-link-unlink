@@ -44,6 +44,7 @@
   },
   "dependencies": {
     "link-unlink": "^0.1.17",
+    "lock": "^1.1.0",
     "mkdirp-classic": "^0.5.3",
     "queue-cb": "^1.4.13"
   },
