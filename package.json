@@ -1,6 +1,6 @@
 {
   "name": "module-link-unlink",
-  "version": "0.1.20",
+  "version": "0.1.21",
   "description": "Link and unlink a module with saving and restoring the previous install",
   "keywords": [
     "link",
