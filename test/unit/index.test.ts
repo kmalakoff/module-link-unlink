@@ -13,6 +13,8 @@ const __dirname = path.dirname(typeof __filename !== 'undefined' ? __filename : 
 const DATA = path.join(__dirname, '..', '..', 'node_modules');
 const TMP_DIR = path.join(__dirname, '..', '..', '.tmp');
 
+const STRESS_COUNT = 10;
+
 describe('module-link-unlink', () => {
   before(rimraf2.bind(null, TMP_DIR, { disableGlob: true }));
   // after(rimraf2.bind(null, TMP_DIR, { disableGlob: true }));
@@ -97,44 +99,34 @@ describe('module-link-unlink', () => {
         assert.equal(fs.readdirSync(TMP_DIR).length, 0);
       });
 
-      it('linkModule multiple', (done) => {
+      it('link multiple (serial)', async () => {
         const source = path.join(DATA, name);
         const dest = path.join(TMP_DIR, name);
         assert.equal(existsSync(dest), false);
 
-        linkModule(source, TMP_DIR, (err) => {
-          if (err) return done(err.message);
+        for (let counter = 0; counter < STRESS_COUNT; counter++) {
+          await linkModule(source, TMP_DIR);
+        }
+        assert.equal(existsSync(dest), true);
+        checkFiles(fs.readdirSync(TMP_DIR), STRESS_COUNT);
+        for (let counter = 0; counter < STRESS_COUNT; counter++) {
+          await unlinkModule(source, TMP_DIR);
+        }
+        assert.equal(existsSync(dest), false);
+        assert.equal(fs.readdirSync(TMP_DIR).length, 0);
+      });
 
-          linkModule(source, TMP_DIR, (err) => {
-            if (err) return done(err.message);
+      it('link multiple (parallel)', async () => {
+        const source = path.join(DATA, name);
+        const dest = path.join(TMP_DIR, name);
+        assert.equal(existsSync(dest), false);
 
-            linkModule(source, TMP_DIR, (err) => {
-              if (err) return done(err.message);
-
-              assert.equal(existsSync(dest), true);
-              checkFiles(fs.readdirSync(TMP_DIR), 3);
-
-              unlinkModule(source, TMP_DIR, (err) => {
-                if (err) return done(err.message);
-                assert.equal(existsSync(dest), true);
-                checkFiles(fs.readdirSync(TMP_DIR), 2);
-
-                unlinkModule(source, TMP_DIR, (err) => {
-                  if (err) return done(err.message);
-                  assert.equal(existsSync(dest), true);
-                  checkFiles(fs.readdirSync(TMP_DIR), 1);
-
-                  unlinkModule(source, TMP_DIR, (err) => {
-                    if (err) return done(err.message);
-                    assert.equal(existsSync(dest), false);
-                    assert.equal(fs.readdirSync(TMP_DIR).length, 0);
-                    done();
-                  });
-                });
-              });
-            });
-          });
-        });
+        await Promise.all([...Array(STRESS_COUNT)].map((_) => linkModule(source, TMP_DIR)));
+        assert.equal(existsSync(dest), true);
+        checkFiles(fs.readdirSync(TMP_DIR), STRESS_COUNT);
+        await Promise.all([...Array(STRESS_COUNT)].map((_) => unlinkModule(source, TMP_DIR)));
+        assert.equal(existsSync(dest), false);
+        assert.equal(fs.readdirSync(TMP_DIR).length, 0);
       });
     });
   }

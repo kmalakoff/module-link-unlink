@@ -1,6 +1,6 @@
 {
   "name": "module-link-unlink",
-  "version": "0.1.19",
+  "version": "0.1.20",
   "description": "Link and unlink a module with saving and restoring the previous install",
   "keywords": [
     "link",
@@ -43,7 +43,7 @@
     "version": "tsds version"
   },
   "dependencies": {
-    "link-unlink": "^0.1.17",
+    "link-unlink": "^0.1.18",
     "lock": "^1.1.0",
     "mkdirp-classic": "^0.5.3",
     "queue-cb": "^1.4.13"
