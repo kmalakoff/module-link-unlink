@@ -1,7 +1,10 @@
 import fs from 'fs';
 import path from 'path';
 import { unlink } from 'link-unlink';
+import { Lock } from 'lock';
 import Queue from 'queue-cb';
+
+const lock = Lock();
 
 function unlinkBin(nodeModules, binName, callback) {
   const destBin = path.join(nodeModules, '.bin', binName);
@@ -14,23 +17,26 @@ function unlinkBin(nodeModules, binName, callback) {
 }
 
 function worker(src, nodeModules, callback) {
-  try {
-    const pkg = JSON.parse(fs.readFileSync(path.join(src, 'package.json'), 'utf8'));
-    const dest = path.join.apply(null, [nodeModules, ...pkg.name.split('/')]);
+  lock([src, nodeModules], (release) => {
+    callback = release(callback);
+    try {
+      const pkg = JSON.parse(fs.readFileSync(path.join(src, 'package.json'), 'utf8'));
+      const dest = path.join.apply(null, [nodeModules, ...pkg.name.split('/')]);
 
-    const queue = new Queue(1);
-    queue.defer(unlink.bind(null, dest));
+      const queue = new Queue(1);
+      queue.defer(unlink.bind(null, dest));
 
-    if (typeof pkg.bin === 'string')
-      queue.defer(unlinkBin.bind(null, nodeModules, pkg.name)); // single bins
-    else for (const binName in pkg.bin) queue.defer(unlinkBin.bind(null, nodeModules, binName)); // object of bins
+      if (typeof pkg.bin === 'string')
+        queue.defer(unlinkBin.bind(null, nodeModules, pkg.name)); // single bins
+      else for (const binName in pkg.bin) queue.defer(unlinkBin.bind(null, nodeModules, binName)); // object of bins
 
-    queue.await((err) => {
-      err ? callback(err) : callback(null, dest);
-    });
-  } catch (err) {
-    return callback(err);
-  }
+      queue.await((err) => {
+        err ? callback(err) : callback(null, dest);
+      });
+    } catch (err) {
+      return callback(err);
+    }
+  });
 }
 
 import type { UnlinkCallback } from './types';
