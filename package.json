@@ -43,7 +43,7 @@
     "version": "tsds version"
   },
   "dependencies": {
-    "link-unlink": "^0.1.22",
+    "link-unlink": "^0.1.23",
     "lock": "^1.1.0",
     "mkdirp-classic": "^0.5.3",
     "queue-cb": "^1.4.16"
@@ -59,10 +59,6 @@
     "node": ">=0.8"
   },
   "tsds": {
-    "source": "src/index.ts",
-    "targets": [
-      "cjs",
-      "esm"
-    ]
+    "source": "src/index.ts"
   }
 }
