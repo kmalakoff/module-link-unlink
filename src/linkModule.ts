@@ -45,7 +45,7 @@ function worker(src, nodeModules, callback) {
   });
 }
 
-import type { LinkCallback } from './types';
+import type { LinkCallback } from './types.js';
 
 export default function linkModule(src: string, nodeModules: string, callback?: undefined | LinkCallback): undefined | Promise<string> {
   if (typeof callback === 'function') return worker(src, nodeModules, callback) as undefined;
