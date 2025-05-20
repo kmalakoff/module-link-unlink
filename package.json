@@ -44,7 +44,7 @@
     "version": "tsds version"
   },
   "dependencies": {
-    "link-unlink": "^0.1.26",
+    "link-unlink": "^0.1.27",
     "lock": "^1.1.0",
     "mkdirp-classic": "^0.5.3",
     "queue-cb": "^1.5.0"
