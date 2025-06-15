@@ -59,7 +59,10 @@ describe('module-link-unlink', () => {
         assert.equal(existsSync(dest), false);
 
         linkModule(source, TMP_DIR, (err, restore) => {
-          if (err) return done(err.message);
+          if (err) {
+            done(err.message);
+            return;
+          }
           assert.equal(restore, dest);
           assert.equal(existsSync(dest), true);
           checkFiles(fs.readdirSync(TMP_DIR), 1);
@@ -70,7 +73,10 @@ describe('module-link-unlink', () => {
           const stat = fs.statSync(dest);
           assert.ok(isType(stat));
           unlinkModule(source, TMP_DIR, (err) => {
-            if (err) return done(err.message);
+            if (err) {
+              done(err.message);
+              return;
+            }
             assert.equal(existsSync(dest), false);
             assert.equal(fs.readdirSync(TMP_DIR).length, 0);
             done();
