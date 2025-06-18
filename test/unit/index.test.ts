@@ -1,13 +1,12 @@
 import assert from 'assert';
 import fs from 'fs';
-import path from 'path';
-import url from 'url';
 import existsSync from 'fs-exists-sync';
-import Pinkie from 'pinkie-promise';
-import rimraf2 from 'rimraf2';
-
 // @ts-ignore
 import { linkModule, unlinkModule } from 'module-link-unlink';
+import path from 'path';
+import Pinkie from 'pinkie-promise';
+import rimraf2 from 'rimraf2';
+import url from 'url';
 
 const __dirname = path.dirname(typeof __filename !== 'undefined' ? __filename : url.fileURLToPath(import.meta.url));
 const DATA = path.join(__dirname, '..', '..', 'node_modules');
@@ -59,7 +58,10 @@ describe('module-link-unlink', () => {
         assert.equal(existsSync(dest), false);
 
         linkModule(source, TMP_DIR, (err, restore) => {
-          if (err) return done(err.message);
+          if (err) {
+            done(err.message);
+            return;
+          }
           assert.equal(restore, dest);
           assert.equal(existsSync(dest), true);
           checkFiles(fs.readdirSync(TMP_DIR), 1);
@@ -70,7 +72,10 @@ describe('module-link-unlink', () => {
           const stat = fs.statSync(dest);
           assert.ok(isType(stat));
           unlinkModule(source, TMP_DIR, (err) => {
-            if (err) return done(err.message);
+            if (err) {
+              done(err.message);
+              return;
+            }
             assert.equal(existsSync(dest), false);
             assert.equal(fs.readdirSync(TMP_DIR).length, 0);
             done();

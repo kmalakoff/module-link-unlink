@@ -1,8 +1,8 @@
 import fs from 'fs';
-import path from 'path';
 import { link } from 'link-unlink';
 import { Lock } from 'lock';
 import mkdirp from 'mkdirp-classic';
+import path from 'path';
 import Queue from 'queue-cb';
 
 const lock = Lock();
