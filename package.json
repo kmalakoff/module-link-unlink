@@ -38,16 +38,16 @@
   ],
   "scripts": {
     "build": "tsds build",
-    "format": "biome check --write --unsafe src/ test/",
+    "format": "biome check --write --unsafe",
     "test": "tsds test:node --no-timeouts",
     "test:engines": "nvu engines tsds test:node --no-timeouts",
     "version": "tsds version"
   },
   "dependencies": {
-    "link-unlink": "^0.1.29",
+    "link-unlink": "^0.1.30",
     "lock": "^1.1.0",
     "mkdirp-classic": "^0.5.3",
-    "queue-cb": "^1.5.2"
+    "queue-cb": "^1.5.3"
   },
   "devDependencies": {
     "@types/mocha": "*",

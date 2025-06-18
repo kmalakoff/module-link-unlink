@@ -1,7 +1,7 @@
 import fs from 'fs';
-import path from 'path';
 import { unlink } from 'link-unlink';
 import { Lock } from 'lock';
+import path from 'path';
 import Queue from 'queue-cb';
 
 const lock = Lock();
