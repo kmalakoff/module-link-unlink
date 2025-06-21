@@ -39,7 +39,7 @@ function worker(src, nodeModules, callback) {
   });
 }
 
-import type { UnlinkCallback } from './types.js';
+import type { UnlinkCallback } from './types.ts';
 
 export default function unlinkModule(src: string, nodeModules: string, callback?: undefined | UnlinkCallback): undefined | Promise<string> {
   if (typeof callback === 'function') return worker(src, nodeModules, callback) as undefined;
