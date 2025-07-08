@@ -44,10 +44,10 @@
     "version": "tsds version"
   },
   "dependencies": {
-    "link-unlink": "^1.0.1",
-    "lock": "^1.1.0",
-    "mkdirp-classic": "^0.5.3",
-    "queue-cb": "^1.5.5"
+    "link-unlink": "*",
+    "lock": "*",
+    "mkdirp-classic": "*",
+    "queue-cb": "*"
   },
   "devDependencies": {
     "@types/mocha": "*",
