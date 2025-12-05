@@ -56,7 +56,7 @@ describe('module-link-unlink', () => {
 
         linkModule(source, TMP_DIR, (err, restore) => {
           if (err) {
-            done(err.message);
+            done(err);
             return;
           }
           assert.equal(restore, dest);
@@ -70,7 +70,7 @@ describe('module-link-unlink', () => {
           assert.ok(isType(stat));
           unlinkModule(source, TMP_DIR, (err) => {
             if (err) {
-              done(err.message);
+              done(err);
               return;
             }
             assert.equal(existsSync(dest), false);
