@@ -46,16 +46,16 @@
     "version": "tsds version"
   },
   "dependencies": {
-    "link-unlink": "^1.0.11",
+    "link-unlink": "^1.0.12",
     "lock": "^1.1.0",
     "mkdirp-classic": "^0.5.3",
-    "queue-cb": "^1.6.2"
+    "queue-cb": "^1.6.3"
   },
   "devDependencies": {
     "@types/mocha": "^10.0.10",
     "@types/node": "^25.0.1",
     "fs-exists-sync": "^0.1.0",
-    "fs-remove-compat": "^0.2.2",
+    "fs-remove-compat": "^0.2.3",
     "node-version-use": "^2.1.5",
     "pinkie-promise": "^2.0.1",
     "ts-dev-stack": "^1.21.3",
