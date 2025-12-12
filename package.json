@@ -56,7 +56,7 @@
     "@types/node": "^25.0.1",
     "fs-exists-sync": "^0.1.0",
     "fs-remove-compat": "^0.2.3",
-    "node-version-use": "^2.1.5",
+    "node-version-use": "^2.1.6",
     "pinkie-promise": "^2.0.1",
     "ts-dev-stack": "^1.21.3",
     "tsds-config": "^0.2.1"
