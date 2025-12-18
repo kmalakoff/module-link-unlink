@@ -47,7 +47,7 @@ function worker(src, nodeModules, callback) {
 
 import type { LinkCallback } from './types.ts';
 
-export default function linkModule(src: string, nodeModules: string, callback?: undefined | LinkCallback): undefined | Promise<string> {
-  if (typeof callback === 'function') return worker(src, nodeModules, callback) as undefined;
+export default function linkModule(src: string, nodeModules: string, callback?: LinkCallback): void | Promise<string> {
+  if (typeof callback === 'function') return worker(src, nodeModules, callback);
   return new Promise((resolve, reject) => worker(src, nodeModules, (err, restore?) => (err ? reject(err) : resolve(restore))));
 }
