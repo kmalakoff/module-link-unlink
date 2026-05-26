@@ -7,7 +7,9 @@ import Queue from 'queue-cb';
 
 const lock = Lock();
 
-function linkBin(src, binPath, nodeModules, binName, callback) {
+import type { LinkCallback } from './types.ts';
+
+function linkBin(src: string, binPath: string, nodeModules: string, binName: string, callback: LinkCallback) {
   const binFullPath = path.join.apply(null, [src, ...binPath.split('/')]);
   const destBin = path.join(nodeModules, '.bin', binName);
 
@@ -18,7 +20,7 @@ function linkBin(src, binPath, nodeModules, binName, callback) {
   });
 }
 
-function worker(src, nodeModules, callback) {
+function worker(src: string, nodeModules: string, callback: LinkCallback) {
   lock([src, nodeModules], (release) => {
     callback = release(callback);
     try {
@@ -29,25 +31,31 @@ function worker(src, nodeModules, callback) {
         if (err) return callback(err);
 
         const queue = new Queue();
-        queue.defer(link.bind(null, src, dest));
+        queue.defer((cb) => link(src, dest, (err) => cb(err ?? undefined)));
 
-        if (typeof pkg.bin === 'string')
-          queue.defer(linkBin.bind(null, src, pkg.bin, nodeModules, pkg.name)); // single bins
-        else for (const binName in pkg.bin) queue.defer(linkBin.bind(null, src, pkg.bin[binName], nodeModules, binName)); // object of bins
+        if (typeof pkg.bin === 'string') {
+          const binName = pkg.name as string;
+          const binPath = pkg.bin as string;
+          queue.defer((cb) => linkBin(src, binPath, nodeModules, binName, (err) => cb(err ?? undefined)));
+        } else {
+          for (const binName in pkg.bin) {
+            const bn = binName;
+            const bp = pkg.bin[bn] as string;
+            queue.defer((cb) => linkBin(src, bp, nodeModules, bn, (err) => cb(err ?? undefined)));
+          }
+        }
 
         queue.await((err) => {
-          err ? callback(err) : callback(null, dest);
+          err ? callback(err) : callback(undefined, dest);
         });
       });
     } catch (err) {
-      return callback(err);
+      return callback(err instanceof Error ? err : new Error(String(err)));
     }
   });
 }
 
-import type { LinkCallback } from './types.ts';
-
 export default function linkModule(src: string, nodeModules: string, callback?: LinkCallback): void | Promise<string> {
   if (typeof callback === 'function') return worker(src, nodeModules, callback);
-  return new Promise((resolve, reject) => worker(src, nodeModules, (err, restore?) => (err ? reject(err) : resolve(restore))));
+  return new Promise((resolve, reject) => worker(src, nodeModules, (err, restore?) => (err ? reject(err) : resolve(restore!))));
 }
