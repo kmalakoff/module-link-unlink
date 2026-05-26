@@ -31,17 +31,17 @@ function worker(src: string, nodeModules: string, callback: LinkCallback) {
         if (err) return callback(err);
 
         const queue = new Queue();
-        queue.defer((cb) => link(src, dest, (err) => cb(err ?? undefined)));
+        queue.defer((cb) => link(src, dest, (err) => cb(err)));
 
         if (typeof pkg.bin === 'string') {
           const binName = pkg.name as string;
           const binPath = pkg.bin as string;
-          queue.defer((cb) => linkBin(src, binPath, nodeModules, binName, (err) => cb(err ?? undefined)));
+          queue.defer((cb) => linkBin(src, binPath, nodeModules, binName, (err) => cb(err)));
         } else {
           for (const binName in pkg.bin) {
             const bn = binName;
             const bp = pkg.bin[bn] as string;
-            queue.defer((cb) => linkBin(src, bp, nodeModules, bn, (err) => cb(err ?? undefined)));
+            queue.defer((cb) => linkBin(src, bp, nodeModules, bn, (err) => cb(err)));
           }
         }
 
