@@ -26,15 +26,15 @@ function worker(src: string, nodeModules: string, callback: UnlinkCallback) {
       const dest = path.join.apply(null, [nodeModules, ...pkg.name.split('/')]);
 
       const queue = new Queue(1);
-      queue.defer((cb) => unlink(dest, (err) => cb(err ?? undefined)));
+      queue.defer((cb) => unlink(dest, (err) => cb(err)));
 
       if (typeof pkg.bin === 'string') {
         const binName = pkg.name as string;
-        queue.defer((cb) => unlinkBin(nodeModules, binName, (err) => cb(err ?? undefined)));
+        queue.defer((cb) => unlinkBin(nodeModules, binName, (err) => cb(err)));
       } else {
         for (const binName in pkg.bin) {
           const bn = binName;
-          queue.defer((cb) => unlinkBin(nodeModules, bn, (err) => cb(err ?? undefined)));
+          queue.defer((cb) => unlinkBin(nodeModules, bn, (err) => cb(err)));
         }
       }
 
