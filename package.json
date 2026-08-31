@@ -54,7 +54,6 @@
   "devDependencies": {
     "@types/mocha": "*",
     "@types/node": "*",
-    "fs-exists-sync": "^0.1.0",
     "fs-remove-compat": "^1.0.0",
     "node-version-use": "*",
     "pinkie-promise": "*",
@@ -63,5 +62,11 @@
   },
   "engines": {
     "node": ">=0.8"
+  },
+  "allowScripts": {
+    "node-filename-to-dist-paths": true,
+    "node-semvers": true,
+    "node-version-use": true,
+    "thread-sleep-compat": true
   }
 }
