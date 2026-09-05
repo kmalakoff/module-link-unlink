@@ -1,10 +1,12 @@
 import fs from 'fs';
 import { link } from 'link-unlink';
-import { Lock } from 'lock';
+import lockPkg from 'lock';
 import mkdirp from 'mkdirp-classic';
 import path from 'path';
 import Queue from 'queue-cb';
 
+// 'lock' is CommonJS: named CJS imports need Node >= 12.20 / >= 14.13, newer than this package's engines floor.
+const { Lock } = lockPkg;
 const lock = Lock();
 
 import type { LinkCallback } from './types.ts';
@@ -57,5 +59,5 @@ function worker(src: string, nodeModules: string, callback: LinkCallback) {
 
 export default function linkModule(src: string, nodeModules: string, callback?: LinkCallback): void | Promise<string> {
   if (typeof callback === 'function') return worker(src, nodeModules, callback);
-  return new Promise((resolve, reject) => worker(src, nodeModules, (err, restore?) => (err ? reject(err) : resolve(restore!))));
+  return new Promise((resolve, reject) => worker(src, nodeModules, (err, restore?) => (err ? reject(err) : resolve(restore as string))));
 }

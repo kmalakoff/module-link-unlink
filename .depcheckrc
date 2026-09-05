@@ -1,1 +1,1 @@
-ignores: ["node-version-use", "ts-dev-stack", "module-link-unlink"]
+ignores: ["module-link-unlink", "node-version-use", "ts-dev-stack"]
